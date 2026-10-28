@@ -1,0 +1,943 @@
+{
+  "info": {
+    "name": "Casino Online - Equipo 08",
+    "description": "Los 25 endpoints de la API. Ejecuta primero \"2. Iniciar sesión\": guarda el token automáticamente.\nUsuarios de prueba: admin@casino.test / sofia.hernandez@correo.test (contraseña Casino123).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "M1 Autenticación",
+      "item": [
+        {
+          "name": "1. Registro de jugador (RN-01)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/registro",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "registro"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana López\",\n  \"correo\": \"ana@correo.com\",\n  \"password\": \"Secreta123\",\n  \"fechaNacimiento\": \"2000-05-20\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Respuesta correcta', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+                  "const t = pm.response.json().token; if (t) pm.collectionVariables.set('token', t);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. Iniciar sesión",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"admin@casino.test\",\n  \"password\": \"Casino123\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Respuesta correcta', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+                  "const t = pm.response.json().token; if (t) pm.collectionVariables.set('token', t);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. Perfil del usuario actual",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/perfil",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "perfil"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "4. Cambiar contraseña",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "password"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actual\": \"\",\n  \"nueva\": \"\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "M2 Usuarios",
+      "item": [
+        {
+          "name": "5. Listar usuarios (búsqueda, filtros, orden y paginación)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "rol",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "activo",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "orden",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "dir",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pagina",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limite",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "7. Crear usuario (administrador o jugador)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"\",\n  \"correo\": \"\",\n  \"password\": \"\",\n  \"fechaNacimiento\": \"\",\n  \"rol\": \"admin\",\n  \"activo\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "6. Detalle de usuario con estadísticas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                ":id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "8. Editar usuario (datos, rol, activo, contraseña)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                ":id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"\",\n  \"correo\": \"\",\n  \"password\": \"\",\n  \"fechaNacimiento\": \"\",\n  \"rol\": \"admin\",\n  \"activo\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "9. Dar de baja (desactivar) un usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                ":id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "M3 Juegos",
+      "item": [
+        {
+          "name": "10. Listar juegos (el jugador solo ve los activos)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/juegos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "juegos"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "tipo",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "activo",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "orden",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "dir",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pagina",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limite",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "12. Crear juego o variante con límites de apuesta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/juegos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "juegos"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slug\": \"blackjack-vip\",\n  \"tipo\": \"blackjack\",\n  \"nombre\": \"Blackjack VIP\",\n  \"descripcion\": \"\",\n  \"apuestaMin\": 500,\n  \"apuestaMax\": 5000,\n  \"activo\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "11. Detalle de un juego",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/juegos/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "juegos",
+                ":id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "13. Editar juego (límites, activo)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/juegos/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "juegos",
+                ":id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slug\": \"blackjack-vip\",\n  \"tipo\": \"blackjack\",\n  \"nombre\": \"Blackjack VIP\",\n  \"descripcion\": \"\",\n  \"apuestaMin\": 500,\n  \"apuestaMax\": 5000,\n  \"activo\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "14. Borrar juego (solo si no tiene apuestas)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/juegos/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "juegos",
+                ":id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "M4 Billetera",
+      "item": [
+        {
+          "name": "15. Saldo y límites de recarga del jugador",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/billetera",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "billetera"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "16. Recargar créditos (RN-04)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/billetera/recargas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "billetera",
+                "recargas"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"monto\": 500\n}"
+            }
+          }
+        },
+        {
+          "name": "17. Historial de movimientos del jugador",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/billetera/movimientos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "billetera",
+                "movimientos"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "desde",
+                  "value": "2026-10-01",
+                  "disabled": true
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-10-31",
+                  "disabled": true
+                },
+                {
+                  "key": "dir",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pagina",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limite",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "18. Ajuste manual de saldo por el administrador (RN-07)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/:id/ajuste-saldo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                ":id",
+                "ajuste-saldo"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"monto\": -200,\n  \"motivo\": \"Corrección por falla del juego\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "M5 Apuestas",
+      "item": [
+        {
+          "name": "19. Apostar e iniciar una partida (transacción; RN-02, RN-03, RN-05, RN-06)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/apuestas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "apuestas"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"juegoId\": 1,\n  \"monto\": 50\n}"
+            }
+          }
+        },
+        {
+          "name": "21. Historial de apuestas (jugador ve las suyas; administrador todas)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/apuestas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "apuestas"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "usuarioId",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "juegoId",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "estado",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "orden",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "desde",
+                  "value": "2026-10-01",
+                  "disabled": true
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-10-31",
+                  "disabled": true
+                },
+                {
+                  "key": "dir",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pagina",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limite",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "20. Jugada en una partida en curso",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/apuestas/:id/acciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "apuestas",
+                ":id",
+                "acciones"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accion\": \"pedir\",\n  \"conservar\": [],\n  \"angulo\": 100,\n  \"potencia\": 100\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "M6 Administración",
+      "item": [
+        {
+          "name": "22. Indicadores y series para las gráficas (por defecto últimos 30 días)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard"
+              ],
+              "query": [
+                {
+                  "key": "desde",
+                  "value": "2026-10-01",
+                  "disabled": true
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-10-31",
+                  "disabled": true
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "23. Reporte 1 - Apuestas por juego en un rango de fechas (obligatorio)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/apuestas-por-juego",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "apuestas-por-juego"
+              ],
+              "query": [
+                {
+                  "key": "desde",
+                  "value": "2026-10-01",
+                  "disabled": false
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-10-31",
+                  "disabled": false
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "24. Reporte 2 - Ranking de jugadores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/jugadores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "jugadores"
+              ],
+              "query": [
+                {
+                  "key": "desde",
+                  "value": "2026-10-01",
+                  "disabled": true
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-10-31",
+                  "disabled": true
+                },
+                {
+                  "key": "orden",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "dir",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limite",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "25. Bitácora de operaciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bitacora",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bitacora"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "accion",
+                  "value": "apuesta",
+                  "disabled": true
+                },
+                {
+                  "key": "entidad",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "usuarioId",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "desde",
+                  "value": "2026-10-01",
+                  "disabled": true
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-10-31",
+                  "disabled": true
+                },
+                {
+                  "key": "dir",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pagina",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "limite",
+                  "value": "",
+                  "disabled": true
+                }
+              ],
+              "variable": []
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

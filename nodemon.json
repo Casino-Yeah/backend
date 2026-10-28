@@ -1,0 +1,6 @@
+{
+  "watch": ["src", "shared", "openapi.yaml"],
+  "ext": "js,json,yaml",
+  "delay": 300,
+  "legacyWatch": true
+}
